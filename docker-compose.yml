@@ -21,10 +21,8 @@ services:
     container_name: "laracepta-php"
     build:
       context: ./docker/php
-    ports:
-      - "${PHP_PORT}:80"
     volumes:
-      - ./:/home
+      - ./:/app
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     restart: "always"
 
@@ -35,7 +33,7 @@ services:
       context: ./docker/nginx
     restart: "always"
     volumes:
-      - ./:/home
+      - ./:/app
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "${NGINX_PORT}:80"
