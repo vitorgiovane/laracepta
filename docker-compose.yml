@@ -1,36 +1,50 @@
 version: "3"
 
 services:
-  # Postgres (11.3)
-  postgres:
-    container_name: "laracepta-postgres"
+  # Mysql (5.7)
+  mysql:
+    container_name: "laracepta-mysql"
     build:
-      context: ./docker/postgres
-    restart: "always"
+      context: ./
+      dockerfile: ./docker/mysql/Dockerfile
     volumes:
-      - ./docker/postgres/data:/var/lib/postgresql/data
+      - ./docker/mysql/data:/var/lib/mysql
+    restart: "always"
     ports:
-      - "${DB_PORT}:5432"
+      - "${DB_PORT}:3306"
     environment:
-      - POSTGRES_DB=${DB_DATABASE}
-      - POSTGRES_USER=${DB_USERNAME}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=${DB_ALLOW_EMPTY_PASSWORD}
+    networks:
+    - app-network
 
   # PHP (7.3.5-fpm-alpine3.9)
   php:
     container_name: "laracepta-php"
     build:
       context: ./docker/php
+    ports:
+      - "${PHP_PORT}:80"
     volumes:
       - ./:/app
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     restart: "always"
+    networks:
+      - app-network
 
   # Nginx (1.16.0-alpine)
   nginx:
     container_name: "laracepta-nginx"
     build:
       context: ./docker/nginx
+    tty: true
+    environment:
+      SERVICE_NAME: laracepta-nginx
+      SERVICE_TAGS: dev
+    working_dir: /app
     restart: "always"
     volumes:
       - ./:/app
@@ -39,4 +53,11 @@ services:
       - "${NGINX_PORT}:80"
     links:
       - "php"
-      - "postgres"
+      - "mysql"
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
