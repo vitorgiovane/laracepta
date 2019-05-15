@@ -25,7 +25,7 @@ class CreateSalesTable extends Migration
       $table->engine = 'InnoDB';
       $table->increments('id');
       $table->integer('quantity');
-      $table->integer('seller_id');
+      $table->integer('seller_id')->unsigned();
 
       $table->index(["seller_id"], 'fk_sales_sellers1_idx');
       $table->timestamps();
