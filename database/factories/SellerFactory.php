@@ -9,6 +9,6 @@ $factory->define(\App\Seller::class, function (Faker $faker) {
     'name' => $faker->name(),
     'email' => $faker->email(),
     'picture' => $faker->imageUrl(500, 500, 'people')
-];
+  ];
 });
 
