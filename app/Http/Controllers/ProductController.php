@@ -13,7 +13,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = \App\Product::all();
+        $totalOfProducts = \App\Product::all()->count();
+        return view('products-list', compact('products', 'totalOfProducts'));
     }
 
     /**
