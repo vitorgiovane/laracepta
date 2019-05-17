@@ -4,10 +4,6 @@
   Lista de produtos
 @endsection
 
-@section('sidebar')
-  @component('sidebar')
-@endsection
-
 @section('header')
   @component('components.header')
     Lista de produtos
@@ -20,5 +16,5 @@
 @endsection
 
 @section('content')
-  @component('components.products-table', ['models' => $products]) @endcomponent
+  @component('product.parts.table', ['models' => $products]) @endcomponent
 @endsection

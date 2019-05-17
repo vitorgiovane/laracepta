@@ -14863,8 +14863,6 @@ a.btn-icon-only {
 
 .footer {
   padding: 2.5rem 0;
-
-  background: #f7fafc;
 }
 .footer .col-footer .heading {
   font-size: 0.875rem;
@@ -18182,4 +18180,8 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 
 .header__title {
   color: white;
+}
+
+.product__form {
+  padding-left: 0;
 }
