@@ -20,13 +20,12 @@
 
 <body>
   <!-- NAVBAR -->
-  @include('includes.nav')
+  @include('includes.side')
   <!-- Main content -->
   <div class="main-content">
-    @include('includes.top-nav-bar')
     <!-- Header -->
-    @include('includes.header')
-
+    @yield('header')
+    @yield('nav')
     <div class="container-fluid mt--7">
 
       <!-- CONTENT -->
