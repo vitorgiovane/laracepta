@@ -43,12 +43,13 @@ class ProductController extends Controller
     $picture = $request->file('picture');
     $validPictureExtensions = ['jpg', 'png', 'gif', 'jpeg'];
     $pictureExtension = $picture->extension();
-    if (!$picture->isValid() && !in_array($pictureExtension, $validPictureExtensions)) {
-      die('Invalid picture!');
+    if (!$picture->isValid() || !in_array($pictureExtension, $validPictureExtensions)) {
+      return view('product.create')->withErrors('Imagem inválida! Escolha uma imagem do tipo jpg, jpeg, png ou gif.');
     }
 
     DB::beginTransaction();
     try {
+      $pictureExtension = $picture->extension();
       $pictureName = time() . "." . $pictureExtension;
       $picture->storeAs('pictures', $pictureName);
       $productData['picture'] = Storage::url('pictures/' . $pictureName);
@@ -59,7 +60,7 @@ class ProductController extends Controller
       return $this->index();
     } catch (\Exception $e) {
       DB::rollBack();
-      die('Failed');
+      return view('product.create')->withErrors('Aconteceu um erro');
     }
   }
 
