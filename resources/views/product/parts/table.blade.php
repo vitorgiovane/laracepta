@@ -43,6 +43,16 @@
               <td>
                 {{ $product->updated_at }}
               </td>
+              <td>
+                <div class="actions__buttons">
+                <a href="{{ route('products.edit', ['product' => $product->id]) }}" class="actions__update icon icon-shape bg-info text-white rounded-circle shadow">
+                      <i class="ni ni-settings-gear-65"></i>
+                    </a>
+                    <a href="{{ route('products.destroy', ['product' => $product->id]) }}" class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                      <i class="ni ni-fat-remove"></i>
+                    </a>
+                </div>
+              </td>
             </tr>
             @endforeach
           </tbody>

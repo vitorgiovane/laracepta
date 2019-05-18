@@ -15134,8 +15134,8 @@ textarea[resize="horizontal"] {
 }
 
 .icon {
-  width: 3rem;
-  height: 3rem;
+  width: 2rem;
+  height: 2rem;
 }
 .icon i,
 .icon svg {
@@ -18183,4 +18183,12 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 
 .product__form {
   padding-left: 0;
+}
+
+.actions__buttons {
+  display: flex;
+}
+
+.actions__update {
+  margin-right: 5px;
 }

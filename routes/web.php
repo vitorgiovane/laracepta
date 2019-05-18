@@ -17,6 +17,6 @@ Route::get('/', function () {
 
 Route::resources([
   'products' => 'ProductController',
-  'sellers' => 'SellerController',
-  'sales' => 'SaleController'
+  // 'sellers' => 'SellerController',
+  // 'sales' => 'SaleController'
 ]);
