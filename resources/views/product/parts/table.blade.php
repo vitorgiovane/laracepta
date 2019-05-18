@@ -19,29 +19,29 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($models as $model)
+            @foreach($products as $product)
             <tr>
               <th scope="row">
                 <div class="media align-items-center">
                   <a href="#" class="avatar mr-3">
-                    <img alt="Image placeholder" src="{{ $model->picture }}">
+                    <img alt="Image placeholder" src="{{ $product->picture }}">
                   </a>
                   <div class="media-body">
-                    <span class="mb-0 text-sm">{{ $model->name }}</span>
+                    <span class="mb-0 text-sm">{{ $product->name }}</span>
                   </div>
                 </div>
               </th>
               <td>
-                {{ $model->description }}
+                {{ $product->description }}
               </td>
               <td>
-                R$ {{ $model->price }}
+                R$ {{ $product->price }}
               </td>
               <td>
-                {{ $model->quantity }}
+                {{ $product->quantity }}
               </td>
               <td>
-                {{ $model->updated_at }}
+                {{ $product->updated_at }}
               </td>
             </tr>
             @endforeach

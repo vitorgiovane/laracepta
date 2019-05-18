@@ -10,11 +10,14 @@
     @slot('nav')
       @component('components.button')
         Cadastrar produto
+        @slot('url')
+          products/create
+        @endslot
       @endcomponent
     @endslot
   @endcomponent
 @endsection
 
 @section('content')
-  @component('product.parts.table', ['models' => $products]) @endcomponent
+  @component('product.parts.table', ['products' => $products]) @endcomponent
 @endsection

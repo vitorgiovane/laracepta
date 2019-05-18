@@ -1,1 +1,1 @@
-<button class="btn btn-success">{{ $slot }}</button>
+<a href="{{ $url }}" class="btn btn-success">{{ $slot }}</a>

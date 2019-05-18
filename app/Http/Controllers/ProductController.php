@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use App\Product;
 
 class ProductController extends Controller
 {
@@ -13,8 +16,8 @@ class ProductController extends Controller
    */
   public function index()
   {
-    $products = \App\Product::all();
-    $totalOfProducts = \App\Product::all()->count();
+    $products = Product::all();
+    $totalOfProducts = Product::all()->count();
     return view('product.list', compact('products', 'totalOfProducts'));
   }
 
@@ -36,7 +39,28 @@ class ProductController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $productData = $request->only(['name', 'description', 'quantity', 'price', 'picture']);
+    $picture = $request->file('picture');
+    $validPictureExtensions = ['jpg', 'png', 'gif', 'jpeg'];
+    $pictureExtension = $picture->extension();
+    if (!$picture->isValid() && !in_array($pictureExtension, $validPictureExtensions)) {
+      die('Invalid picture!');
+    }
+
+    DB::beginTransaction();
+    try {
+      $pictureName = time() . "." . $pictureExtension;
+      $picture->storeAs('pictures', $pictureName);
+      $productData['picture'] = Storage::url('pictures/' . $pictureName);
+
+      Product::create($productData);
+
+      DB::commit();
+      return $this->index();
+    } catch (\Exception $e) {
+      DB::rollBack();
+      die('Failed');
+    }
   }
 
   /**
