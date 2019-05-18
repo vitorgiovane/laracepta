@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('title')
-  Cadastrar produto
+  Atualizar produto
 @endsection
 
 @section('header')
   @component('components.header')
-    Cadastrar produto
+    Atualizar produto
   @endcomponent
 @endsection
 
@@ -20,9 +20,9 @@
       </ul>
     </div>
   @endif
-  @component('product.parts.form')
-    Cadastrar produto
-    @slot('method') POST @endslot
-    @slot('action') {{ route('products.store') }} @endslot
+  @component('product.parts.form', ['product' => $product])
+    Atualizar produto
+    @slot('method') PUT @endslot
+    @slot('action') {{ route('products.update', ['product' => $product->id] ) }} @endslot
   @endcomponent
 @endsection

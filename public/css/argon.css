@@ -18192,3 +18192,44 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
 .actions__update {
   margin-right: 5px;
 }
+
+.product__form-picture {
+  max-width: 100%;
+  min-height: 100%;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.product__form-image {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  background: #E3DEEE;
+}
+
+.product__form-image element {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.product__form-image-input {
+  opacity: 0;
+  height:1px;
+  max-width: 100%;
+}
+
+.product__input-picture-btn {
+  margin-top: -1px;
+  color: #fff;  
+  background:#7963E4;
+  -webkit-border-radius: 4px;
+-webkit-border-top-left-radius: 0px;
+-webkit-border-top-right-radius: 0px;
+-moz-border-radius: 4px;
+-moz-border-radius-topleft: 0px;
+-moz-border-radius-topright: 0px;
+border-radius: 4px;
+border-top-left-radius: 0px;
+border-top-right-radius: 0px;
+}

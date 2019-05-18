@@ -43,6 +43,7 @@ class ProductController extends Controller
     $picture = $request->file('picture');
     $validPictureExtensions = ['jpg', 'png', 'gif', 'jpeg'];
     $pictureExtension = $picture->extension();
+
     if (!$picture->isValid() || !in_array($pictureExtension, $validPictureExtensions)) {
       $mensagemDeRetorno = 'Imagem inválida! Escolha uma imagem do tipo jpg, jpeg, png ou gif.';
       return redirect('/products/create')->withErrors($mensagemDeRetorno);
@@ -50,7 +51,6 @@ class ProductController extends Controller
 
     DB::beginTransaction();
     try {
-      $pictureExtension = $picture->extension();
       $pictureName = time() . "." . $pictureExtension;
       $picture->storeAs('pictures', $pictureName);
       $productData['picture'] = Storage::url('pictures/' . $pictureName);
@@ -74,7 +74,8 @@ class ProductController extends Controller
    */
   public function show($id)
   {
-    //
+    $product = Product::find($id);
+    return view('product.edit', compact('product'));
   }
 
   /**
@@ -85,7 +86,8 @@ class ProductController extends Controller
    */
   public function edit($id)
   {
-    //
+    $product = Product::find($id);
+    return view('product.edit', compact('product'));
   }
 
   /**
@@ -97,7 +99,35 @@ class ProductController extends Controller
    */
   public function update(Request $request, $id)
   {
-    //
+    $productData = $request->only(['name', 'description', 'quantity', 'price', 'picture']);
+    $picture = $request->file('picture');
+
+    if ($picture) {
+      $validPictureExtensions = ['jpg', 'png', 'gif', 'jpeg'];
+
+      if (!$picture->isValid() || !in_array($picture->extension(), $validPictureExtensions)) {
+        $mensagemDeRetorno = 'Imagem inválida! Escolha uma imagem do tipo jpg, jpeg, png ou gif.';
+        return redirect()->route('products.update', ['product' => $id])->withErrors($mensagemDeRetorno);
+      }
+
+      $pictureName = time() . "." . $picture->extension();
+      $picture->storeAs('pictures', $pictureName);
+      $productData['picture'] = Storage::url('pictures/' . $pictureName);
+    }
+
+    DB::beginTransaction();
+    try {
+      $product = Product::find($id);
+      $product->fill($productData);
+      $product->save();
+
+      DB::commit();
+      return $this->index();
+    } catch (\Exception $e) {
+      DB::rollBack();
+      $mensagemDeRetorno = 'Aconteceu um erro durante o cadastro do produto. Tente novamente.';
+      return redirect('/products/create')->withErrors($mensagemDeRetorno);
+    }
   }
 
   /**

@@ -11,7 +11,7 @@
       @component('components.button')
         Cadastrar produto
         @slot('url')
-          products/create
+          {{ route('products.create') }}
         @endslot
       @endcomponent
     @endslot
