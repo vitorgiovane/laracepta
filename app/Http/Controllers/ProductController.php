@@ -44,7 +44,8 @@ class ProductController extends Controller
     $validPictureExtensions = ['jpg', 'png', 'gif', 'jpeg'];
     $pictureExtension = $picture->extension();
     if (!$picture->isValid() || !in_array($pictureExtension, $validPictureExtensions)) {
-      return view('product.create')->withErrors('Imagem inválida! Escolha uma imagem do tipo jpg, jpeg, png ou gif.');
+      $mensagemDeRetorno = 'Imagem inválida! Escolha uma imagem do tipo jpg, jpeg, png ou gif.';
+      return view('product.create')->withErrors($mensagemDeRetorno);
     }
 
     DB::beginTransaction();
@@ -60,7 +61,8 @@ class ProductController extends Controller
       return $this->index();
     } catch (\Exception $e) {
       DB::rollBack();
-      return view('product.create')->withErrors('Aconteceu um erro');
+      $mensagemDeRetorno = 'Aconteceu um erro durante o cadastro do produto. Tente novamente.';
+      return view('product.create')->withErrors($mensagemDeRetorno);
     }
   }
 
