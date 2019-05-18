@@ -18233,3 +18233,15 @@ border-radius: 4px;
 border-top-left-radius: 0px;
 border-top-right-radius: 0px;
 }
+
+.products__product-box {
+  -webkit-transition: -webkit-transform .3s;
+  transition: -webkit-transform .3s;
+  transition: transform .3s;
+  transition: transform .3s, -webkit-transform .3s;
+  -webkit-transition-timing-function: cubic-bezier(0.2, 1.4, 0.2, 1.4);
+  transition-timing-function: cubic-bezier(0.2, 1.4, 0.2, 1.4);
+}
+.products__product-box:hover {
+  transform: scale(1.1);
+}

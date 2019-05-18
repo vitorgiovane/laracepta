@@ -18,14 +18,18 @@
             @foreach($products as $product)
             <tr>
               <th scope="row">
-                <div class="media align-items-center">
-                  <a href="#" class="avatar mr-3">
+                <a href="{{ route('products.show', ['product' => $product]) }}"
+                  class="products__product-box media align-items-center">
+                  <div class="avatar mr-3">
                     <img alt="Image placeholder" src="{{ $product->picture }}">
-                  </a>
-                  <div class="media-body">
-                    <span class="mb-0 text-sm">{{ $product->name }}</span>
                   </div>
-                </div>
+                  <div class="media-body">
+                    <div href="{{ route('products.show', ['product' => $product]) }}"
+                      class="mb-0 text-sm">
+                      {{ $product->name }}
+                    </div>
+                  </div>
+                </a>
               </th>
               <td>
                 {{ $product->description }}
