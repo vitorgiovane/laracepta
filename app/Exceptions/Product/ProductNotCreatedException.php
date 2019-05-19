@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class ProductsGetListException extends Exception
+class ProductNotCreatedException extends Exception
 {
   /**
    * Render the exception into an HTTP response.
@@ -14,6 +14,6 @@ class ProductsGetListException extends Exception
    */
   public function render()
   {
-    return 'Falha ao tentar obter a lista de produtos.';
+    return 'Aconteceu um erro durante o cadastro do produto. Tente novamente.';
   }
 }

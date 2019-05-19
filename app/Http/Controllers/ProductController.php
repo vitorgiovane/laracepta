@@ -9,6 +9,7 @@ use App\Product;
 use App\ProductRepository;
 use App\ProductValidation;
 use App\Exceptions\ProductsGetListException;
+use App\Exceptions\ProductNotCreatedException;
 
 class ProductController extends Controller
 {
@@ -79,14 +80,16 @@ class ProductController extends Controller
       $productData['picture'] = Storage::url('pictures/' . $pictureName);
 
       $productCreated = $this->repository->store($productData);
+      if (empty($productCreated)) {
+        throw new ProductNotCreatedException;
+      }
 
       DB::commit();
       $mensagemDeRetorno = 'Produto cadastrado com sucesso!';
       return redirect()->route('products.index')->with('success', $mensagemDeRetorno);
     } catch (\Exception $e) {
       DB::rollBack();
-      $mensagemDeRetorno = 'Aconteceu um erro durante o cadastro do produto. Tente novamente.';
-      return redirect()->route('products.create')->with('error', $mensagemDeRetorno);
+      return redirect()->route('products.create')->with('error', $e->render());
     }
   }
 
