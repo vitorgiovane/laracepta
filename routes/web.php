@@ -20,3 +20,6 @@ Route::resources([
   // 'sellers' => 'SellerController',
   // 'sales' => 'SaleController'
 ]);
+
+Route::get('/products-index-exception', 'ProductExceptionController@index')
+  ->name('products.index.exception');

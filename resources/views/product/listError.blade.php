@@ -15,7 +15,7 @@
         @endslot
       @endcomponent
       @component('components.counter')
-        {{ $productsList->totalOfProducts }}
+        0
         @slot('legend')
           produtos
         @endslot
@@ -25,5 +25,5 @@
 @endsection
 
 @section('content')
-  @component('product.parts.table', ['products' => $productsList->products]) @endcomponent
+@component('product.parts.table')@endcomponent
 @endsection
