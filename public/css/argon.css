@@ -18254,3 +18254,15 @@ border-top-right-radius: 0px;
 .navbar-vertical.navbar-expand-md .navbar-nav .nav-link.active::before {
   border-left: 7px solid #5e72e4;
 }
+
+.header__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+  font-size: 1.3em;
+}
+.components__counter {
+  font-size: 1.8em;
+  color: #ffffff;
+}

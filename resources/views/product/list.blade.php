@@ -14,6 +14,12 @@
           {{ route('products.create') }}
         @endslot
       @endcomponent
+      @component('components.counter')
+        {{ $totalOfProducts }}
+        @slot('legend')
+          produtos
+        @endslot
+      @endcomponent
     @endslot
   @endcomponent
 @endsection
