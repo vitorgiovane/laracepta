@@ -6,9 +6,11 @@ use App\Product;
 
 class ProductRepository
 {
-  public function index()
+  public function index($request)
   {
-    $products = Product::orderBy('created_at', 'desc')->get();
+    $pagination = !empty($request->per_page) ? (int)$request->per_page : 10;
+
+    $products = Product::orderBy('created_at', 'desc')->paginate($pagination);
     $totalOfProducts = Product::all()->count();
     $productsList = (object)[
       'products' => $products,
