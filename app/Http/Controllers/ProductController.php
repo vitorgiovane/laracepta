@@ -10,6 +10,7 @@ use App\ProductRepository;
 use App\ProductValidation;
 use App\Exceptions\ProductsGetListException;
 use App\Exceptions\ProductNotCreatedException;
+use App\Exceptions\ProductNotFoundException;
 
 class ProductController extends Controller
 {
@@ -105,8 +106,16 @@ class ProductController extends Controller
     if ($validator->fails()) {
       return redirect()->route('products.index')->withErrors($validator);
     }
-    $product = $this->repository->show($id);
-    return view('product.edit', compact('product'));
+
+    try {
+      $product = $this->repository->show($id);
+      if (empty($product)) {
+        throw new ProductNotFoundException;
+      }
+      return view('product.edit', compact('product'));
+    } catch (\Exception $e) {
+      return redirect()->route('products.index')->with('error', $e->render());
+    }
   }
 
   /**
