@@ -80,7 +80,7 @@ class ProductController extends Controller
    */
   public function show($id)
   {
-    $product = Product::find($id);
+    $product = $this->repository->show($id);
     return view('product.edit', compact('product'));
   }
 
