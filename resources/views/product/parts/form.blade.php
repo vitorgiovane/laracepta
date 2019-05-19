@@ -22,7 +22,7 @@
                 <div class="form-group">
                   <label class="form-control-label" for="input-price">Preço</label>
                   <input name="price" value="{{ !empty($product->price) ? $product->price : null }}"
-                    min="0" max="99999999999" type="number" required id="input-price"
+                    min="0" max="99999999999" type="text" required id="input-price"
                     class="form-control form-control-alternative" placeholder="Preço">
                 </div>
                 </div>

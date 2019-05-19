@@ -115,6 +115,10 @@ class ProductController extends Controller
    */
   public function update(Request $request, $id)
   {
+    $validator = $this->validation->update($request);
+    if ($validator->fails()) {
+      return redirect()->route('products.edit', ['product' => $id])->withErrors($validator);
+    }
     $productData = $request->only(['name', 'description', 'quantity', 'price', 'picture']);
     $picture = $request->file('picture');
 
