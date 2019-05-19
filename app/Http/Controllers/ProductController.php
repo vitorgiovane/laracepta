@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Storage;
 use App\Product;
 use App\ProductRepository;
 use App\ProductValidation;
+use App\Exceptions\ProductsGetListException;
+use App\Exceptions\ProductNotCreatedException;
+use App\Exceptions\ProductNotFoundException;
+use App\Exceptions\ProductNotUpdatedException;
+use App\Exceptions\ProductNotDeletedException;
 
 class ProductController extends Controller
 {
@@ -28,8 +33,15 @@ class ProductController extends Controller
     if ($validator->fails()) {
       return redirect()->route('products.index')->withErrors($validator);
     }
-    $productsList = $this->repository->index($request);
-    return view('product.list', compact('productsList'));
+    try {
+      $productsList = $this->repository->index($request);
+      if (empty($productsList)) {
+        throw new ProductsGetListException;
+      }
+      return view('product.list', compact('productsList'));
+    } catch (\Exception $e) {
+      return redirect()->route('products.index.exception')->with('error', $e->render());
+    }
   }
 
   /**
@@ -71,14 +83,16 @@ class ProductController extends Controller
       $productData['picture'] = Storage::url('pictures/' . $pictureName);
 
       $productCreated = $this->repository->store($productData);
+      if (empty($productCreated)) {
+        throw new ProductNotCreatedException;
+      }
 
       DB::commit();
       $mensagemDeRetorno = 'Produto cadastrado com sucesso!';
       return redirect()->route('products.index')->with('success', $mensagemDeRetorno);
     } catch (\Exception $e) {
       DB::rollBack();
-      $mensagemDeRetorno = 'Aconteceu um erro durante o cadastro do produto. Tente novamente.';
-      return redirect()->route('products.create')->with('error', $mensagemDeRetorno);
+      return redirect()->route('products.create')->with('error', $e->render());
     }
   }
 
@@ -94,8 +108,16 @@ class ProductController extends Controller
     if ($validator->fails()) {
       return redirect()->route('products.index')->withErrors($validator);
     }
-    $product = $this->repository->show($id);
-    return view('product.edit', compact('product'));
+
+    try {
+      $product = $this->repository->show($id);
+      if (empty($product)) {
+        throw new ProductNotFoundException;
+      }
+      return view('product.edit', compact('product'));
+    } catch (\Exception $e) {
+      return redirect()->route('products.index')->with('error', $e->render());
+    }
   }
 
   /**
@@ -142,13 +164,16 @@ class ProductController extends Controller
     DB::beginTransaction();
     try {
       $productUpdated = $this->repository->update($id, $productData);
+      if (empty($productUpdated)) {
+        throw new ProductNotUpdatedException;
+      }
 
       DB::commit();
-      return redirect()->route('products.index')->with('success', 'Produto atualizado com sucesso!');
+      $successMessage = 'Produto atualizado com sucesso!';
+      return redirect()->route('products.index')->with('success', $successMessage);
     } catch (\Exception $e) {
       DB::rollBack();
-      $mensagemDeRetorno = 'Aconteceu um erro durante o cadastro do produto. Tente novamente.';
-      return redirect('/products/create')->withErrors($mensagemDeRetorno);
+      return redirect()->route('products.update', ['product' => $id])->with('error', $e->render());
     }
   }
 
@@ -166,14 +191,17 @@ class ProductController extends Controller
     }
     DB::beginTransaction();
     try {
-      $this->repository->destroy($id);
+      $productDeleted = $this->repository->destroy($id);
+      if (empty($productDeleted)) {
+        throw new ProductNotDeletedException;
+      }
+
       DB::commit();
       $mensagemDeRetorno = 'Produto removido com sucesso!';
       return redirect()->route('products.index')->with('success', $mensagemDeRetorno);
     } catch (\Exception $e) {
       DB::rollBack();
-      $mensagemDeRetorno = 'Aconteceu um erro durante a exclusão do produto. Tente novamente.';
-      return redirect()->route('products.index')->with('error', $mensagemDeRetorno);
+      return redirect()->route('products.index')->with('error', $e->render());
     }
   }
 }

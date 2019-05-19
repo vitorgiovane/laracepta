@@ -15,6 +15,7 @@
             </tr>
           </thead>
           <tbody>
+            @if(!empty($products))
             @foreach($products as $product)
             <tr>
               <th scope="row">
@@ -63,13 +64,16 @@
               </td>
             </tr>
             @endforeach
+            @endif
           </tbody>
         </table>
       </div>
       <div class="card-footer py-4">
         <nav aria-label="...">
           <ul class="pagination justify-content-end mb-0">
-              {{ $products->links() }}
+              @if(!empty($products))
+                {{ $products->links() }}
+              @endif
           </ul>
         </nav>
       </div>
