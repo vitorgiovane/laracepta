@@ -45,6 +45,11 @@ class ProductValidation
     return $validator;
   }
 
-  public function destroy($request)
-  { }
+  public function destroy($id)
+  {
+    $validator = Validator::make(['id' => $id], [
+      'id' => 'bail|required|digits_between:0,99999999999|exists:products,id'
+    ]);
+    return $validator;
+  }
 }

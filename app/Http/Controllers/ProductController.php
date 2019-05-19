@@ -156,6 +156,10 @@ class ProductController extends Controller
    */
   public function destroy($id)
   {
+    $validator = $this->validation->destroy($id);
+    if ($validator->fails()) {
+      return redirect()->route('products.index')->withErrors($validator);
+    }
     DB::beginTransaction();
     try {
       $this->repository->destroy($id);
