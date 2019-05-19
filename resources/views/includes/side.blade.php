@@ -55,7 +55,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link @php if(strpos(Route::currentRouteName(), 'sellers') !== false) echo 'active'; @endphp" href="{{ route('products.index') }}">
+          <a class="nav-link @php if(strpos(Route::currentRouteName(), 'sellers') !== false) echo 'active'; @endphp" href="{{ route('sellers.index') }}">
             <i class="ni ni-single-02 text-primary"></i>Vendedores
           </a>
         </li>
