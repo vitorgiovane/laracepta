@@ -18250,3 +18250,7 @@ border-top-right-radius: 0px;
   border: none;
   cursor: pointer;
 }
+
+.navbar-vertical.navbar-expand-md .navbar-nav .nav-link.active::before {
+  border-left: 7px solid #5e72e4;
+}
