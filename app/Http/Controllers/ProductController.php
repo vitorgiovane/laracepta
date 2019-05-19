@@ -6,9 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Product;
+use App\ProductRepository;
 
 class ProductController extends Controller
 {
+  public function __construct()
+  {
+    $this->productRepository = new ProductRepository();
+  }
+
   /**
    * Display a listing of the resource.
    *
@@ -16,9 +22,8 @@ class ProductController extends Controller
    */
   public function index()
   {
-    $products = Product::orderBy('created_at', 'desc')->get();
-    $totalOfProducts = Product::all()->count();
-    return view('product.list', compact('products', 'totalOfProducts'));
+    $productsList = $this->productRepository->index();
+    return view('product.list', compact('productsList'));
   }
 
   /**
