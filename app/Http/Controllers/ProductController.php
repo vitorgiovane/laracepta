@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Product;
 use App\ProductRepository;
 use App\ProductValidation;
+use App\Exceptions\ProductsGetListException;
 
 class ProductController extends Controller
 {
@@ -28,8 +29,15 @@ class ProductController extends Controller
     if ($validator->fails()) {
       return redirect()->route('products.index')->withErrors($validator);
     }
-    $productsList = $this->repository->index($request);
-    return view('product.list', compact('productsList'));
+    try {
+      $productsList = $this->repository->index($request);
+      if (empty($productsList)) {
+        throw new ProductsGetListException;
+      }
+      return view('product.list', compact('productsList'));
+    } catch (\Exception $e) {
+      return redirect()->route('products.index.exception')->with('error', $e->render());
+    }
   }
 
   /**
