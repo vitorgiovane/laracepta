@@ -6,9 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Product;
+use App\ProductRepository;
 
 class ProductController extends Controller
 {
+  public function __construct()
+  {
+    $this->repository = new ProductRepository();
+  }
+
   /**
    * Display a listing of the resource.
    *
@@ -16,9 +22,8 @@ class ProductController extends Controller
    */
   public function index()
   {
-    $products = Product::orderBy('created_at', 'desc')->get();
-    $totalOfProducts = Product::all()->count();
-    return view('product.list', compact('products', 'totalOfProducts'));
+    $productsList = $this->repository->index();
+    return view('product.list', compact('productsList'));
   }
 
   /**
@@ -55,7 +60,7 @@ class ProductController extends Controller
       $picture->storeAs('pictures', $pictureName);
       $productData['picture'] = Storage::url('pictures/' . $pictureName);
 
-      Product::create($productData);
+      $productCreated = $this->repository->store($productData);
 
       DB::commit();
       $mensagemDeRetorno = 'Produto cadastrado com sucesso!';
@@ -75,7 +80,7 @@ class ProductController extends Controller
    */
   public function show($id)
   {
-    $product = Product::find($id);
+    $product = $this->repository->show($id);
     return view('product.edit', compact('product'));
   }
 
@@ -118,9 +123,7 @@ class ProductController extends Controller
 
     DB::beginTransaction();
     try {
-      $product = Product::find($id);
-      $product->fill($productData);
-      $product->save();
+      $productUpdated = $this->repository->update($id, $productData);
 
       DB::commit();
       return redirect()->route('products.index')->with('success', 'Produto atualizado com sucesso!');
@@ -139,13 +142,11 @@ class ProductController extends Controller
    */
   public function destroy($id)
   {
-    $product = Product::find($id);
-
     DB::beginTransaction();
     try {
-      $product->delete();
-      $mensagemDeRetorno = 'Produto removido com sucesso!';
+      $this->repository->destroy($id);
       DB::commit();
+      $mensagemDeRetorno = 'Produto removido com sucesso!';
       return redirect()->route('products.index')->with('success', $mensagemDeRetorno);
     } catch (\Exception $e) {
       DB::rollBack();
