@@ -142,13 +142,11 @@ class ProductController extends Controller
    */
   public function destroy($id)
   {
-    $product = Product::find($id);
-
     DB::beginTransaction();
     try {
-      $product->delete();
-      $mensagemDeRetorno = 'Produto removido com sucesso!';
+      $this->repository->destroy($id);
       DB::commit();
+      $mensagemDeRetorno = 'Produto removido com sucesso!';
       return redirect()->route('products.index')->with('success', $mensagemDeRetorno);
     } catch (\Exception $e) {
       DB::rollBack();

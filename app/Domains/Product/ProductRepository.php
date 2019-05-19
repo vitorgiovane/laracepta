@@ -31,4 +31,11 @@ class ProductRepository
     $productUpdated = $product->save();
     return $productUpdated;
   }
+
+  public function destroy($productId)
+  {
+    $product = Product::find($productId);
+    $productDeleted = $product->delete();
+    return $productDeleted;
+  }
 }
