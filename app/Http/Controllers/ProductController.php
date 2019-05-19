@@ -22,8 +22,12 @@ class ProductController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  public function index()
+  public function index(Request $request)
   {
+    $validator = $this->validation->index($request);
+    if ($validator->fails()) {
+      return redirect()->route('products.index')->withErrors($validator);
+    }
     $productsList = $this->repository->index($request);
     return view('product.list', compact('productsList'));
   }

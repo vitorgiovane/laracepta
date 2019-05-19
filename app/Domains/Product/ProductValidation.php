@@ -7,7 +7,12 @@ use Validator;
 class ProductValidation
 {
   public function index($request)
-  { }
+  {
+    $validator = Validator::make($request->all(), [
+      'per_page' => 'bail|filled|integer|between:1,50'
+    ]);
+    return $validator;
+  }
 
   public function show($id)
   {
