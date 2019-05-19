@@ -12,6 +12,7 @@ use App\Exceptions\ProductsGetListException;
 use App\Exceptions\ProductNotCreatedException;
 use App\Exceptions\ProductNotFoundException;
 use App\Exceptions\ProductNotUpdatedException;
+use App\Exceptions\ProductNotDeletedException;
 
 class ProductController extends Controller
 {
@@ -190,14 +191,17 @@ class ProductController extends Controller
     }
     DB::beginTransaction();
     try {
-      $this->repository->destroy($id);
+      $productDeleted = $this->repository->destroy($id);
+      if (empty($productDeleted)) {
+        throw new ProductNotDeletedException;
+      }
+
       DB::commit();
       $mensagemDeRetorno = 'Produto removido com sucesso!';
       return redirect()->route('products.index')->with('success', $mensagemDeRetorno);
     } catch (\Exception $e) {
       DB::rollBack();
-      $mensagemDeRetorno = 'Aconteceu um erro durante a exclusão do produto. Tente novamente.';
-      return redirect()->route('products.index')->with('error', $mensagemDeRetorno);
+      return redirect()->route('products.index')->with('error', $e->render());
     }
   }
 }
