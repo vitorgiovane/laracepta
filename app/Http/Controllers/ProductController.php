@@ -11,6 +11,7 @@ use App\ProductValidation;
 use App\Exceptions\ProductsGetListException;
 use App\Exceptions\ProductNotCreatedException;
 use App\Exceptions\ProductNotFoundException;
+use App\Exceptions\ProductNotUpdatedException;
 
 class ProductController extends Controller
 {
@@ -162,13 +163,16 @@ class ProductController extends Controller
     DB::beginTransaction();
     try {
       $productUpdated = $this->repository->update($id, $productData);
+      if (empty($productUpdated)) {
+        throw new ProductNotUpdatedException;
+      }
 
       DB::commit();
-      return redirect()->route('products.index')->with('success', 'Produto atualizado com sucesso!');
+      $successMessage = 'Produto atualizado com sucesso!';
+      return redirect()->route('products.index')->with('success', $successMessage);
     } catch (\Exception $e) {
       DB::rollBack();
-      $mensagemDeRetorno = 'Aconteceu um erro durante o cadastro do produto. Tente novamente.';
-      return redirect('/products/create')->withErrors($mensagemDeRetorno);
+      return redirect()->route('products.update', ['product' => $id])->with('error', $e->render());
     }
   }
 
