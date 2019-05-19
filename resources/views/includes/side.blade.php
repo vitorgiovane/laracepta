@@ -45,23 +45,23 @@
         <li class="nav-item">
           <a class="nav-link @php if(strpos(Route::currentRouteName(), 'dashboard') !== false) echo 'active'; @endphp"
             href="{{ route('products.index') }}">
-            <i class="ni ni-tv-2 text-primary"></i>Painel de controle
+            <i class="ni ni-palette text-primary"></i>Painel de controle
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link @php if(strpos(Route::currentRouteName(), 'products') !== false) echo 'active'; @endphp"
             href="{{ route('products.index') }}">
-            <i class="ni ni-planet text-blue"></i>Produtos
+            <i class="ni ni-tag text-primary"></i>Produtos
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link @php if(strpos(Route::currentRouteName(), 'sellers') !== false) echo 'active'; @endphp" href="{{ route('products.index') }}">
-            <i class="ni ni-single-02 text-yellow"></i>Vendedores
+            <i class="ni ni-single-02 text-primary"></i>Vendedores
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link @php if(strpos(Route::currentRouteName(), 'sale') !== false) echo 'active'; @endphp" href="{{ route('products.index') }}">
-            <i class="ni ni-bullet-list-67 text-red"></i>Vendas
+            <i class="ni ni-cart text-primary"></i>Vendas
           </a>
         </li>
       </ul>
