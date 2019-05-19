@@ -15185,8 +15185,6 @@ textarea[resize="horizontal"] {
 .icon-shape {
   display: inline-flex;
 
-  padding: 12px;
-
   text-align: center;
 
   border-radius: 50%;
@@ -15916,9 +15914,8 @@ textarea[resize="horizontal"] {
   border-left: 2px solid #5e72e4;
 }
 .navbar-vertical .navbar-nav .nav-link > i {
-  font-size: 0.9375rem;
+  font-size: 1.2rem;
   line-height: 1.5rem;
-
   min-width: 2.25rem;
 }
 .navbar-vertical .navbar-nav .nav-link .dropdown-menu {
@@ -18249,4 +18246,24 @@ border-top-right-radius: 0px;
 .button__delete {
   border: none;
   cursor: pointer;
+}
+
+.navbar-vertical.navbar-expand-md .navbar-nav .nav-link.active::before {
+  border-left: 7px solid #5e72e4;
+}
+
+.header__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+  font-size: 1.3em;
+}
+.components__counter {
+  font-size: 1.8em;
+  color: #ffffff;
+}
+
+.nav-link {
+  font-weight: bold;
 }

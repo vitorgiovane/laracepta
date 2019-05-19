@@ -6,19 +6,42 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Product;
+use App\ProductRepository;
+use App\ProductValidation;
+use App\Exceptions\ProductsGetListException;
+use App\Exceptions\ProductNotCreatedException;
+use App\Exceptions\ProductNotFoundException;
+use App\Exceptions\ProductNotUpdatedException;
+use App\Exceptions\ProductNotDeletedException;
 
 class ProductController extends Controller
 {
+  public function __construct()
+  {
+    $this->repository = new ProductRepository();
+    $this->validation = new ProductValidation();
+  }
+
   /**
    * Display a listing of the resource.
    *
    * @return \Illuminate\Http\Response
    */
-  public function index()
+  public function index(Request $request)
   {
-    $products = Product::orderBy('created_at', 'desc')->get();
-    $totalOfProducts = Product::all()->count();
-    return view('product.list', compact('products', 'totalOfProducts'));
+    $validator = $this->validation->index($request);
+    if ($validator->fails()) {
+      return redirect()->route('products.index')->withErrors($validator);
+    }
+    try {
+      $productsList = $this->repository->index($request);
+      if (empty($productsList)) {
+        throw new ProductsGetListException;
+      }
+      return view('product.list', compact('productsList'));
+    } catch (\Exception $e) {
+      return redirect()->route('products.index.exception')->with('error', $e->render());
+    }
   }
 
   /**
@@ -39,6 +62,10 @@ class ProductController extends Controller
    */
   public function store(Request $request)
   {
+    $validator = $this->validation->store($request);
+    if ($validator->fails()) {
+      return redirect()->route('products.create')->withErrors($validator);
+    }
     $productData = $request->only(['name', 'description', 'quantity', 'price', 'picture']);
     $picture = $request->file('picture');
     $validPictureExtensions = ['jpg', 'png', 'gif', 'jpeg'];
@@ -55,15 +82,17 @@ class ProductController extends Controller
       $picture->storeAs('pictures', $pictureName);
       $productData['picture'] = Storage::url('pictures/' . $pictureName);
 
-      Product::create($productData);
+      $productCreated = $this->repository->store($productData);
+      if (empty($productCreated)) {
+        throw new ProductNotCreatedException;
+      }
 
       DB::commit();
       $mensagemDeRetorno = 'Produto cadastrado com sucesso!';
       return redirect()->route('products.index')->with('success', $mensagemDeRetorno);
     } catch (\Exception $e) {
       DB::rollBack();
-      $mensagemDeRetorno = 'Aconteceu um erro durante o cadastro do produto. Tente novamente.';
-      return redirect()->route('products.create')->with('error', $mensagemDeRetorno);
+      return redirect()->route('products.create')->with('error', $e->render());
     }
   }
 
@@ -75,8 +104,20 @@ class ProductController extends Controller
    */
   public function show($id)
   {
-    $product = Product::find($id);
-    return view('product.edit', compact('product'));
+    $validator = $this->validation->show($id);
+    if ($validator->fails()) {
+      return redirect()->route('products.index')->withErrors($validator);
+    }
+
+    try {
+      $product = $this->repository->show($id);
+      if (empty($product)) {
+        throw new ProductNotFoundException;
+      }
+      return view('product.edit', compact('product'));
+    } catch (\Exception $e) {
+      return redirect()->route('products.index')->with('error', $e->render());
+    }
   }
 
   /**
@@ -100,6 +141,10 @@ class ProductController extends Controller
    */
   public function update(Request $request, $id)
   {
+    $validator = $this->validation->update($request);
+    if ($validator->fails()) {
+      return redirect()->route('products.edit', ['product' => $id])->withErrors($validator);
+    }
     $productData = $request->only(['name', 'description', 'quantity', 'price', 'picture']);
     $picture = $request->file('picture');
 
@@ -118,16 +163,17 @@ class ProductController extends Controller
 
     DB::beginTransaction();
     try {
-      $product = Product::find($id);
-      $product->fill($productData);
-      $product->save();
+      $productUpdated = $this->repository->update($id, $productData);
+      if (empty($productUpdated)) {
+        throw new ProductNotUpdatedException;
+      }
 
       DB::commit();
-      return redirect()->route('products.index')->with('success', 'Produto atualizado com sucesso!');
+      $successMessage = 'Produto atualizado com sucesso!';
+      return redirect()->route('products.index')->with('success', $successMessage);
     } catch (\Exception $e) {
       DB::rollBack();
-      $mensagemDeRetorno = 'Aconteceu um erro durante o cadastro do produto. Tente novamente.';
-      return redirect('/products/create')->withErrors($mensagemDeRetorno);
+      return redirect()->route('products.update', ['product' => $id])->with('error', $e->render());
     }
   }
 
@@ -139,18 +185,23 @@ class ProductController extends Controller
    */
   public function destroy($id)
   {
-    $product = Product::find($id);
-
+    $validator = $this->validation->destroy($id);
+    if ($validator->fails()) {
+      return redirect()->route('products.index')->withErrors($validator);
+    }
     DB::beginTransaction();
     try {
-      $product->delete();
-      $mensagemDeRetorno = 'Produto removido com sucesso!';
+      $productDeleted = $this->repository->destroy($id);
+      if (empty($productDeleted)) {
+        throw new ProductNotDeletedException;
+      }
+
       DB::commit();
+      $mensagemDeRetorno = 'Produto removido com sucesso!';
       return redirect()->route('products.index')->with('success', $mensagemDeRetorno);
     } catch (\Exception $e) {
       DB::rollBack();
-      $mensagemDeRetorno = 'Aconteceu um erro durante a exclusão do produto. Tente novamente.';
-      return redirect()->route('products.index')->with('error', $mensagemDeRetorno);
+      return redirect()->route('products.index')->with('error', $e->render());
     }
   }
 }
