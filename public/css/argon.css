@@ -18245,3 +18245,8 @@ border-top-right-radius: 0px;
 .products__product-box:hover {
   transform: scale(1.1);
 }
+
+.button__delete {
+  border: none;
+  cursor: pointer;
+}
