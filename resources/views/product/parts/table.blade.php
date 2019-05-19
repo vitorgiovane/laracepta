@@ -45,12 +45,20 @@
               </td>
               <td>
                 <div class="actions__buttons">
-                <a href="{{ route('products.edit', ['product' => $product->id]) }}" class="actions__update icon icon-shape bg-info text-white rounded-circle shadow">
+                <a href="{{ route('products.edit', ['product' => $product->id]) }}"
+                  class="actions__update icon icon-shape bg-info text-white rounded-circle shadow">
                       <i class="ni ni-settings-gear-65"></i>
                     </a>
-                    <a href="{{ route('products.destroy', ['product' => $product->id]) }}" class="icon icon-shape bg-warning text-white rounded-circle shadow">
-                      <i class="ni ni-fat-remove"></i>
-                    </a>
+                    <form method="POST"
+                      action="{{ route('products.destroy', ['product' => $product->id]) }}"
+                      onsubmit="return confirm('Deseja excluir o produto {{ $product->name }}?')">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" 
+                        class="button__delete icon icon-shape bg-warning text-white rounded-circle shadow">
+                        <i class="ni ni-fat-remove"></i>
+                      </button>
+                    </form>
                 </div>
               </td>
             </tr>
