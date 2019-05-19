@@ -21,3 +21,13 @@
     </div>
   </div>
 @endif
+
+@if (!empty($errors))
+  <div class="flash-container">
+    @foreach ($errors->all() as $error)
+      <div class="flash-message js-msg" data-type="warning" data-timeout="10000" data-theme="light" data-progress>
+        {{ $error }}
+      </div>
+    @endforeach
+  </div>
+@endif

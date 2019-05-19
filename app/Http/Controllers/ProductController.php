@@ -7,12 +7,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Product;
 use App\ProductRepository;
+use App\ProductValidation;
 
 class ProductController extends Controller
 {
   public function __construct()
   {
     $this->repository = new ProductRepository();
+    $this->validation = new ProductValidation();
   }
 
   /**
@@ -44,6 +46,10 @@ class ProductController extends Controller
    */
   public function store(Request $request)
   {
+    $validator = $this->validation->store($request);
+    if ($validator->fails()) {
+      return redirect()->route('products.create')->withErrors($validator);
+    }
     $productData = $request->only(['name', 'description', 'quantity', 'price', 'picture']);
     $picture = $request->file('picture');
     $validPictureExtensions = ['jpg', 'png', 'gif', 'jpeg'];

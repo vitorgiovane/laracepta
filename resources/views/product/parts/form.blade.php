@@ -10,8 +10,8 @@
           <div class="col-lg-12">
             <div class="form-group">
               <label class="form-control-label" for="input-username">Nome do produto</label>
-            <input name="name" value="{{ !empty($product->name) ? $product->name : '' }}" minlength="4" maxlength="80" type="text" required id="input-username"
-                class="form-control form-control-alternative" placeholder="Nome">
+            <input name="name" value="{{ !empty($product->name) ? $product->name : null }}" minlength="4" maxlength="80" type="text" id="input-username"
+                class="form-control form-control-alternative" placeholder="Nome" required>
             </div>
           </div>
         </div>
@@ -21,7 +21,7 @@
               <div class="col-lg-12">
                 <div class="form-group">
                   <label class="form-control-label" for="input-price">Preço</label>
-                  <input name="price" value={{ !empty($product->price) ? $product->price : '' }}
+                  <input name="price" value="{{ !empty($product->price) ? $product->price : null }}"
                     min="0" max="99999999999" type="number" required id="input-price"
                     class="form-control form-control-alternative" placeholder="Preço">
                 </div>
@@ -29,7 +29,7 @@
                   <div class="col-lg-12">
                     <div class="form-group">
                       <label class="form-control-label" for="input-quantity">Quantidade em estoque</label>
-                    <input name="quantity" value="{{ !empty($product->quantity) ? $product->quantity : '' }}"
+                    <input name="quantity" value="{{ !empty($product->quantity) ? $product->quantity : null }}"
                       min="0" max="99999999999" type="number" required id="input-quantity"
                       class="form-control form-control-alternative" placeholder="Quantidade">
                     </div>
@@ -57,7 +57,7 @@
         </div>
         <!-- Description -->
         @php
-        $productDescription = !empty($product->description) ? $product->description : '';
+        $productDescription = !empty($product->description) ? $product->description : null;
         @endphp
         <div class="form-group">
           <label class="form-control-label" for="input-picture">Descrição do produto</label>
