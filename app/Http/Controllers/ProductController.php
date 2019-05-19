@@ -86,6 +86,10 @@ class ProductController extends Controller
    */
   public function show($id)
   {
+    $validator = $this->validation->show($id);
+    if ($validator->fails()) {
+      return redirect()->route('products.index')->withErrors($validator);
+    }
     $product = $this->repository->show($id);
     return view('product.edit', compact('product'));
   }

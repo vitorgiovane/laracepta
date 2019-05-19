@@ -9,17 +9,22 @@ class ProductValidation
   public function index($request)
   { }
 
-  public function show($request)
-  { }
+  public function show($id)
+  {
+    $validator = Validator::make(['id' => $id], [
+      'id' => 'bail|required|digits_between:0,99999999999|exists:products,id'
+    ]);
+    return $validator;
+  }
 
   public function store($request)
   {
     $validator = Validator::make($request->all(), [
-      'name' => 'required|min:4|max:80',
-      'price' => 'required|digits_between:0,99999999999',
-      'quantity' => 'required|digits_between:0,99999999999',
-      'description' => 'required|min:10|max:200',
-      'picture' => 'required|image|mimes:jpg,jpeg,gif,png|
+      'name' => 'bail|required|min:4|max:80',
+      'price' => 'bail|required|digits_between:0,99999999999',
+      'quantity' => 'bail|required|digits_between:0,99999999999',
+      'description' => 'bail|required|min:10|max:200',
+      'picture' => 'bail|required|image|mimes:jpg,jpeg,gif,png|
                     dimensions:min_width=400,min_height=300,max_width:1980,
                     max_heigth:1080'
     ]);
