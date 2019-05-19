@@ -12,7 +12,7 @@ class ProductController extends Controller
 {
   public function __construct()
   {
-    $this->productRepository = new ProductRepository();
+    $this->repository = new ProductRepository();
   }
 
   /**
@@ -22,7 +22,7 @@ class ProductController extends Controller
    */
   public function index()
   {
-    $productsList = $this->productRepository->index();
+    $productsList = $this->repository->index();
     return view('product.list', compact('productsList'));
   }
 
@@ -60,7 +60,7 @@ class ProductController extends Controller
       $picture->storeAs('pictures', $pictureName);
       $productData['picture'] = Storage::url('pictures/' . $pictureName);
 
-      Product::create($productData);
+      $productCreated = $this->repository->store($productData);
 
       DB::commit();
       $mensagemDeRetorno = 'Produto cadastrado com sucesso!';
@@ -123,9 +123,7 @@ class ProductController extends Controller
 
     DB::beginTransaction();
     try {
-      $product = Product::find($id);
-      $product->fill($productData);
-      $product->save();
+      $productUpdated = $this->repository->update($id, $productData);
 
       DB::commit();
       return redirect()->route('products.index')->with('success', 'Produto atualizado com sucesso!');

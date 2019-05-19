@@ -17,4 +17,18 @@ class ProductRepository
 
     return $productsList;
   }
+
+  public function store($productData)
+  {
+    $productCreated = Product::create($productData);
+    return $productCreated;
+  }
+
+  public function update($productId, $productData)
+  {
+    $product = Product::find($productId);
+    $product->fill($productData);
+    $productUpdated = $product->save();
+    return $productUpdated;
+  }
 }
