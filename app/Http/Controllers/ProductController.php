@@ -7,12 +7,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Product;
 use App\ProductRepository;
+use App\ProductValidation;
 
 class ProductController extends Controller
 {
   public function __construct()
   {
     $this->repository = new ProductRepository();
+    $this->validation = new ProductValidation();
   }
 
   /**
@@ -20,9 +22,13 @@ class ProductController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  public function index()
+  public function index(Request $request)
   {
-    $productsList = $this->repository->index();
+    $validator = $this->validation->index($request);
+    if ($validator->fails()) {
+      return redirect()->route('products.index')->withErrors($validator);
+    }
+    $productsList = $this->repository->index($request);
     return view('product.list', compact('productsList'));
   }
 
@@ -44,6 +50,10 @@ class ProductController extends Controller
    */
   public function store(Request $request)
   {
+    $validator = $this->validation->store($request);
+    if ($validator->fails()) {
+      return redirect()->route('products.create')->withErrors($validator);
+    }
     $productData = $request->only(['name', 'description', 'quantity', 'price', 'picture']);
     $picture = $request->file('picture');
     $validPictureExtensions = ['jpg', 'png', 'gif', 'jpeg'];
@@ -80,6 +90,10 @@ class ProductController extends Controller
    */
   public function show($id)
   {
+    $validator = $this->validation->show($id);
+    if ($validator->fails()) {
+      return redirect()->route('products.index')->withErrors($validator);
+    }
     $product = $this->repository->show($id);
     return view('product.edit', compact('product'));
   }
@@ -105,6 +119,10 @@ class ProductController extends Controller
    */
   public function update(Request $request, $id)
   {
+    $validator = $this->validation->update($request);
+    if ($validator->fails()) {
+      return redirect()->route('products.edit', ['product' => $id])->withErrors($validator);
+    }
     $productData = $request->only(['name', 'description', 'quantity', 'price', 'picture']);
     $picture = $request->file('picture');
 
@@ -142,6 +160,10 @@ class ProductController extends Controller
    */
   public function destroy($id)
   {
+    $validator = $this->validation->destroy($id);
+    if ($validator->fails()) {
+      return redirect()->route('products.index')->withErrors($validator);
+    }
     DB::beginTransaction();
     try {
       $this->repository->destroy($id);
