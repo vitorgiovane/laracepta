@@ -46,7 +46,7 @@ class ProductController extends Controller
 
     if (!$picture->isValid() || !in_array($pictureExtension, $validPictureExtensions)) {
       $mensagemDeRetorno = 'Imagem inválida! Escolha uma imagem do tipo jpg, jpeg, png ou gif.';
-      return redirect('/products/create')->withErrors($mensagemDeRetorno);
+      return redirect()->route('products.create')->with('warning', $mensagemDeRetorno);
     }
 
     DB::beginTransaction();
@@ -58,11 +58,12 @@ class ProductController extends Controller
       Product::create($productData);
 
       DB::commit();
-      return $this->index();
+      $mensagemDeRetorno = 'Produto cadastrado com sucesso!';
+      return redirect()->route('products.index')->with('success', $mensagemDeRetorno);
     } catch (\Exception $e) {
       DB::rollBack();
       $mensagemDeRetorno = 'Aconteceu um erro durante o cadastro do produto. Tente novamente.';
-      return redirect('/products/create')->withErrors($mensagemDeRetorno);
+      return redirect()->route('products.create')->with('error', $mensagemDeRetorno);
     }
   }
 
@@ -107,7 +108,7 @@ class ProductController extends Controller
 
       if (!$picture->isValid() || !in_array($picture->extension(), $validPictureExtensions)) {
         $mensagemDeRetorno = 'Imagem inválida! Escolha uma imagem do tipo jpg, jpeg, png ou gif.';
-        return redirect()->route('products.update', ['product' => $id])->withErrors($mensagemDeRetorno);
+        return redirect()->route('products.update', ['product' => $id])->with('error', $mensagemDeRetorno);
       }
 
       $pictureName = time() . "." . $picture->extension();
@@ -122,7 +123,7 @@ class ProductController extends Controller
       $product->save();
 
       DB::commit();
-      return $this->index();
+      return redirect()->route('products.index')->with('success', 'Produto atualizado com sucesso!');
     } catch (\Exception $e) {
       DB::rollBack();
       $mensagemDeRetorno = 'Aconteceu um erro durante o cadastro do produto. Tente novamente.';
@@ -138,6 +139,18 @@ class ProductController extends Controller
    */
   public function destroy($id)
   {
-    //
+    $product = Product::find($id);
+
+    DB::beginTransaction();
+    try {
+      $product->delete();
+      $mensagemDeRetorno = 'Produto removido com sucesso!';
+      DB::commit();
+      return redirect()->route('products.index')->with('success', $mensagemDeRetorno);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      $mensagemDeRetorno = 'Aconteceu um erro durante a exclusão do produto. Tente novamente.';
+      return redirect()->route('products.index')->with('error', $mensagemDeRetorno);
+    }
   }
 }

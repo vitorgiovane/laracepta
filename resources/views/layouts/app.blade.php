@@ -16,6 +16,9 @@
   <link href="/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
   <!-- Argon CSS -->
   <link type="text/css" href="/css/argon.css?v=1.0.0" rel="stylesheet">
+  <!-- FlashJs -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="/flashjs/flash.css">
 </head>
 
 <body>
@@ -27,6 +30,9 @@
     @yield('header')
     @yield('nav')
     <div class="container-fluid mt--7">
+
+      <!-- FlashJs -->
+      @include('components.alerts')
 
       <!-- CONTENT -->
       @yield('content')
@@ -50,6 +56,10 @@
   <script src="/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Argon JS -->
   <script src="/js/argon.js?v=1.0.0"></script>
+
+  <!-- FlashJs -->
+  <script src="/flashjs/flash.min.js"></script>
+  <script src="/flashjs/app.js"></script>
 </body>
 
 </html>
