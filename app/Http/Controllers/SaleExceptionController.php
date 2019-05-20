@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-class SellerExceptionController extends Controller
+class SaleExceptionController extends Controller
 {
   public function index()
   {
     $error = session('warning');
-    return view('seller.listError', compact('error'));
+    return view('product.listError', compact('error'));
   }
 }

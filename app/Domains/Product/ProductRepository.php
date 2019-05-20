@@ -6,7 +6,7 @@ use App\Product;
 
 class ProductRepository
 {
-  public function index($request)
+  public function index($request = null)
   {
     $pagination = !empty($request->per_page) ? (int)$request->per_page : 10;
 

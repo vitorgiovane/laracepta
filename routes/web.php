@@ -18,7 +18,7 @@ Route::get('/', function () {
 Route::resources([
   'products' => 'ProductController',
   'sellers' => 'SellerController',
-  // 'sales' => 'SaleController'
+  'sales' => 'SaleController'
 ]);
 
 Route::get('/products-index-exception', 'ProductExceptionController@index')
@@ -26,3 +26,6 @@ Route::get('/products-index-exception', 'ProductExceptionController@index')
 
 Route::get('/sellers-index-exception', 'SellerExceptionController@index')
   ->name('sellers.index.exception');
+
+Route::get('/sales-index-exception', 'SaleExceptionController@index')
+  ->name('sales.index.exception');

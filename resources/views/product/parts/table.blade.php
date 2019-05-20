@@ -6,7 +6,7 @@
         <table class="table align-items-center table-flush">
           <thead class="thead-light">
             <tr>
-              <th scope="col">Produtos</th>
+              <th scope="col">Produto</th>
               <th scope="col">Descrição</th>
               <th scope="col">Preço</th>
               <th scope="col">Qtd em estoque</th>
@@ -20,7 +20,7 @@
             <tr>
               <th scope="row">
                 <a href="{{ route('products.show', ['product' => $product]) }}"
-                  class="products__product-box media align-items-center">
+                  class="models__model-box media align-items-center">
                   <div class="avatar mr-3">
                     <img alt="Image placeholder" src="{{ $product->picture }}">
                   </div>

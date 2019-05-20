@@ -25,21 +25,13 @@ class CreateSalesTable extends Migration
       $table->engine = 'InnoDB';
       $table->increments('id');
       $table->integer('quantity');
-      $table->integer('product_id')->unsigned();
       $table->integer('seller_id')->unsigned();
 
-      $table->index(["product_id"], 'fk_sales_products1_idx');
       $table->index(["seller_id"], 'fk_sales_sellers1_idx');
       $table->timestamps();
       $table->softDeletes();
 
-
-      $table->foreign('product_id', 'fk_sales_products1_idx')
-        ->references('id')->on('products')
-        ->onDelete('no action')
-        ->onUpdate('no action');
-
-        $table->foreign('seller_id', 'fk_sales_sellers1_idx')
+      $table->foreign('seller_id', 'fk_sales_sellers1_idx')
         ->references('id')->on('sellers')
         ->onDelete('no action')
         ->onUpdate('no action');

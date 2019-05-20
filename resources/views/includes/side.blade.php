@@ -60,7 +60,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link @php if(strpos(Route::currentRouteName(), 'sale') !== false) echo 'active'; @endphp" href="{{ route('products.index') }}">
+          <a class="nav-link @php if(strpos(Route::currentRouteName(), 'sale') !== false) echo 'active'; @endphp" href="{{ route('sales.index') }}">
             <i class="ni ni-cart text-primary"></i>Vendas
           </a>
         </li>

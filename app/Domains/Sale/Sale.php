@@ -36,6 +36,16 @@ class Sale extends Model
    */
   public function seller()
   {
-    return $this->belongsTo('App\Domains\Seller\Seller');
+    return $this->belongsTo('App\Seller');
+  }
+
+  /**
+   * The Relationship with Product
+   *
+   */
+  public function products()
+  {
+    return $this->belongsToMany('App\Product', 'baskets', 'sale_id', 'product_id')
+      ->withTimestamps();
   }
 }

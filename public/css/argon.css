@@ -18267,3 +18267,18 @@ border-top-right-radius: 0px;
 .nav-link {
   font-weight: bold;
 }
+
+.sales__product {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.sales__product .avatar {
+  width: 40px;
+  height: 40px;
+}
+
+.sellers-form-group {
+  display: flex;
+  flex-direction: column;
+}
