@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class ProductExceptionController extends Controller
 {
-  public function index($error = null)
+  public function index()
   {
     $error = session('warning');
     return view('product.listError', compact('error'));

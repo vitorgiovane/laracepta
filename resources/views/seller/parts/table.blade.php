@@ -18,7 +18,7 @@
             <tr>
               <th scope="row">
                 <a href="{{ route('sellers.show', ['seller' => $seller]) }}"
-                  class="sellers__seller-box media align-items-center">
+                  class="models__model-box media align-items-center">
                   <div class="avatar mr-3">
                     <img alt="Image placeholder" src="{{ $seller->picture }}">
                   </div>

@@ -6,7 +6,7 @@ use App\Seller;
 
 class SellerRepository
 {
-  public function index($request)
+  public function index($request = null)
   {
     $pagination = !empty($request->per_page) ? (int)$request->per_page : 10;
 
