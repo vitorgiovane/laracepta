@@ -43,12 +43,6 @@
       <!-- Navigation -->
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link @php if(strpos(Route::currentRouteName(), 'dashboard') !== false) echo 'active'; @endphp"
-            href="{{ route('products.index') }}">
-            <i class="ni ni-palette text-primary"></i>Painel de controle
-          </a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link @php if(strpos(Route::currentRouteName(), 'products') !== false) echo 'active'; @endphp"
             href="{{ route('products.index') }}">
             <i class="ni ni-tag text-primary"></i>Produtos
@@ -62,6 +56,11 @@
         <li class="nav-item">
           <a class="nav-link @php if(strpos(Route::currentRouteName(), 'sale') !== false) echo 'active'; @endphp" href="{{ route('sales.index') }}">
             <i class="ni ni-cart text-primary"></i>Vendas
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" target="__blank" href="https://github.com/vitorgiovane/laracepta">
+            <i class="github-icon"></i>Repositório no Github
           </a>
         </li>
       </ul>
