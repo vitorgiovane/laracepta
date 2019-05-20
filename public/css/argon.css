@@ -18280,3 +18280,10 @@ border-top-right-radius: 0px;
   display: flex;
   flex-direction: column;
 }
+
+.github-icon {
+  width: 22px;
+  height: 22px;
+  background: url('/img/icons/github.svg') no-repeat;
+  background-size: contain;
+}
