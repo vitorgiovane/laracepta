@@ -6,53 +6,45 @@
         <table class="table align-items-center table-flush">
           <thead class="thead-light">
             <tr>
-              <th scope="col">Produto</th>
-              <th scope="col">Descrição</th>
-              <th scope="col">Preço</th>
-              <th scope="col">Qtd em estoque</th>
+              <th scope="col">Vendedor</th>
+              <th scope="col">E-mail</th>
               <th scope="col">Última atualização</th>
               <th scope="col">Ações</th>
             </tr>
           </thead>
           <tbody>
-            @if(!empty($products))
-            @foreach($products as $product)
+            @if(!empty($sellers))
+            @foreach($sellers as $seller)
             <tr>
               <th scope="row">
-                <a href="{{ route('products.show', ['product' => $product]) }}"
+                <a href="{{ route('sellers.show', ['seller' => $seller]) }}"
                   class="models__model-box media align-items-center">
                   <div class="avatar mr-3">
-                    <img alt="Image placeholder" src="{{ $product->picture }}">
+                    <img alt="Image placeholder" src="{{ $seller->picture }}">
                   </div>
                   <div class="media-body">
-                    <div href="{{ route('products.show', ['product' => $product]) }}"
+                    <div href="{{ route('sellers.show', ['seller' => $seller]) }}"
                       class="mb-0 text-sm">
-                      {{ $product->name }}
+                      {{ $seller->name }}
                     </div>
                   </div>
                 </a>
               </th>
               <td>
-                {{ $product->description }}
+                {{ $seller->email }}
               </td>
               <td>
-                R$ {{ $product->price }}
-              </td>
-              <td>
-                {{ $product->quantity }}
-              </td>
-              <td>
-                {{ $product->updated_at }}
+                {{ $seller->updated_at }}
               </td>
               <td>
                 <div class="actions__buttons">
-                <a href="{{ route('products.edit', ['product' => $product->id]) }}"
+                <a href="{{ route('sellers.edit', ['seller' => $seller->id]) }}"
                   class="actions__update icon icon-shape bg-info text-white rounded-circle shadow">
                       <i class="ni ni-settings-gear-65"></i>
                     </a>
                     <form method="POST"
-                      action="{{ route('products.destroy', ['product' => $product->id]) }}"
-                      onsubmit="return confirm('Deseja excluir o produto {{ $product->name }}?')">
+                      action="{{ route('sellers.destroy', ['seller' => $seller->id]) }}"
+                      onsubmit="return confirm('Deseja excluir o vendedor {{ $seller->name }}?')">
                       @csrf
                       @method('DELETE')
                       <button type="submit"
@@ -71,8 +63,8 @@
       <div class="card-footer py-4">
         <nav aria-label="...">
           <ul class="pagination justify-content-end mb-0">
-              @if(!empty($products))
-                {{ $products->links() }}
+              @if(!empty($sellers))
+                {{ $sellers->links() }}
               @endif
           </ul>
         </nav>

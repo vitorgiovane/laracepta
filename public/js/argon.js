@@ -1067,7 +1067,7 @@ const readURL = input => {
     var reader = new FileReader();
 
     reader.onload = e => {
-      document.getElementById('product__form-picture').src = e.target.result
+      document.getElementById('model__form-picture').src = e.target.result
     }
 
     reader.readAsDataURL(input.files[0]);

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class ProductExceptionController extends Controller
+class SaleExceptionController extends Controller
 {
   public function index()
   {

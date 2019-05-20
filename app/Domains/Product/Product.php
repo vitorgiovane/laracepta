@@ -32,4 +32,13 @@ class Product extends Model
     'updated_at',
     'deleted_at'
   ];
+
+  /**
+   * The Relationship with Product
+   *
+   */
+  public function sales()
+  {
+    return $this->belongsToMany('App\Sale', 'baskets')->withTimestamps();
+  }
 }

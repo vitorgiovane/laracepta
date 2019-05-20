@@ -23,23 +23,10 @@ class CreateBasketsTable extends Migration
     if (Schema::hasTable($this->set_schema_table)) return;
     Schema::create($this->set_schema_table, function (Blueprint $table) {
       $table->engine = 'InnoDB';
-      $table->increments('product_id')->unsigned();
+      $table->increments('id');
+      $table->integer('product_id')->unsigned();
       $table->integer('sale_id')->unsigned();
-
-      $table->index(["product_id"], 'fk_products_has_sales_products_idx');
-
-      $table->index(["sale_id"], 'fk_products_has_sales_sales1_idx');
-
-
-      $table->foreign('product_id', 'fk_products_has_sales_products_idx')
-        ->references('id')->on('products')
-        ->onDelete('no action')
-        ->onUpdate('no action');
-
-      $table->foreign('sale_id', 'fk_products_has_sales_sales1_idx')
-        ->references('id')->on('sales')
-        ->onDelete('no action')
-        ->onUpdate('no action');
+      $table->timestamps();
     });
   }
 
