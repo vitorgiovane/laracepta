@@ -1,4 +1,4 @@
-![Logo](https://user-images.githubusercontent.com/5404361/58443507-97329580-80c8-11e9-8dc2-2461573d6615.png)
+[![Logo](https://user-images.githubusercontent.com/5404361/58443507-97329580-80c8-11e9-8dc2-2461573d6615.png)](http://laracepta.tk)
 
 System that manages the sales of products for a company.
 
