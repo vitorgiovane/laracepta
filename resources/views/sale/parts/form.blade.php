@@ -13,7 +13,7 @@
               <select required name="seller_id" id="input-sellers">
                 <option value="">-- Escolha um vendedor --</option>
                 @foreach ($sellers as $seller)
-                  <option @if($seller->id === $sale->seller_id) selected @endif
+                  <option @if(!empty($sale) && $seller->id === $sale->seller_id) selected @endif
                     value="{{ $seller->id }}">{{ $seller->name }}</option>
                 @endforeach
               </select>
@@ -37,7 +37,7 @@
                 </label>
                 <select name="chosen_products[]" multiple="multiple" size="6" required>
                   @foreach ($products as $product)
-                    <option @if(in_array($product->id, $basket)) selected @endif
+                    <option @if(!empty($basket) && in_array($product->id, $basket)) selected @endif
                       value="{{ $product->id }}">{{ $product->name }}</option>
                   @endforeach
                 </select>
